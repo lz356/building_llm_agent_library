@@ -9,7 +9,6 @@
           "id": "agent_node_1",
           "description": "",
           "system_message": "Limited by space, the detailed system message can be found in the agent library: https://github.com/lz356/building_llm_agent_library/tree/main/LLM_agentic_workflows/data_driven_building_energy_modeling",
-          "message_flow": "action_node_1",
           "entry_point": "True",
           "finish_point": "False"
         }
