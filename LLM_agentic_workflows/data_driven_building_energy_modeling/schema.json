@@ -1,0 +1,53 @@
+{
+  "id": "data_driven_building_energy_modeling",
+  "description": "This workflow is designed to build data-driven building energy models based on the data stored locally",
+  "model": "gpt-4o",
+  "nodes": [
+    {
+      "agent_nodes": [
+        {
+          "id": "agent_node_1",
+          "description": "",
+          "system_message": "Limited by space, the detailed system message can be found in the agent library: https://github.com/lz356/building_llm_agent_library/tree/main/LLM_agentic_workflows/data_driven_building_energy_modeling",
+          "message_flow": "action_node_1",
+          "entry_point": "True",
+          "finish_point": "False"
+        }
+      ]
+    },
+    {
+      "action_nodes": [
+        {
+          "id": "action_node_1",
+          "description": "",
+          "tools": ["python_repl "],
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "simple_edges": [
+        {
+          "id": "edge_1",
+          "connection": ["action_node_1", "agent_node_1"]
+        }
+      ]
+    },
+    {
+      "conditional_edge": [
+        {
+          "id": "edge_2",
+          "connection": ["agent_node_1", { "True": "action_node_1", "False": "END" }]
+        }
+      ]
+    }
+  ],
+"tools": [
+    {
+      "id": " python_repl",
+      "description": "this tool can take in Python code as string and execute the code, which is a built-in function called PythonREPL from LangChain",
+      "content": "tools/python_repl.py"
+    }
+  ]
+}
