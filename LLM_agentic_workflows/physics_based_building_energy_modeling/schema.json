@@ -4,53 +4,43 @@
   "model": "gpt-4o",
   "nodes": [
     {
-      "agent_nodes": [
-        {
-          "id": "unit_conversion",
-          "description": "unit conversion",
-          "system_message": "This agent node updates the building description to use the correct SI units (International System of Units) while keeping the rest of the description unchanged.",
-          "entry_point": "True",
-          "finish_point": "False"
-        },
-        {
-          "id": "object_extraction",
-          "description": "object extraction",
-          "system_message": "This agent node processes building description under SI unit to create a object dictionary about 1) material/construction, 2) internal load (people, lights, electric equipment, infiltration), and 3) HVAC system. The dictionary's keys are the EnergyPlus IDF object type and its name to be created in tuple format (object type in str, object name in str, object name cannot be the same as object type), and the values to be detailed description or requirement of the IDF object, in string format.",
-          "entry_point": "False",
-          "finish_point": "False"
-        },
-        {
-          "id": "object_creation",
-          "description": "object creation",
-          "system_message": "This agent node generates all text-based idf objects for EnergyPlus simulations from the extracted object dictionary. Some general rules when generating the object: - Start with filling out default values for all fields. - Fill out or replace the value that can be extracted from the object dictionary. - If the field is not mandatory and is not defined by the specific requirement, leave the value blank in the field. - If the field is mandatory but not defined by the specific requirement, set it to 'TBD' (to be defined). - Even though some fields are optional or not defined by the specific requirement, keep them in the object and do not remove them. - In the generated object, comment after exclamation mark for each field about why the value is set or is left blank.",
-          "entry_point": "False",
-          "finish_point": "True"
-        }       
-      ]
+      "id": "unit_conversion",
+      "description": "unit conversion",
+      "system_message": "This agent node updates the building description to use the correct SI units (International System of Units) while keeping the rest of the description unchanged.",
+      "type": "agent",
+      "agent_tools": [],
+      "short_term_memory": ["all"],
+      "human_input": ["first_time"]
     },
     {
-      "action_nodes": [
-      ]
-    }
+      "id": "object_extraction",
+      "description": "object extraction",
+      "system_message": "This agent node processes building description under SI unit to create an object dictionary about 1) material/construction, 2) internal load (people, lights, electric equipment, infiltration), and 3) HVAC system. The dictionary's keys are the EnergyPlus IDF object type and its name to be created in tuple format (object type in str, object name in str, object name cannot be the same as object type), and the values to be detailed description or requirement of the IDF object, in string format.",
+      "type": "agent",
+      "agent_tools": [],
+      "short_term_memory": ["all"],
+      "human_input": ["never"]
+    },
+    {
+      "id": "object_creation",
+      "description": "object creation",
+      "system_message": "This agent node generates all text-based idf objects for EnergyPlus simulations from the extracted object dictionary. Some general rules when generating the object: - Start with filling out default values for all fields. - Fill out or replace the value that can be extracted from the object dictionary. - If the field is not mandatory and is not defined by the specific requirement, leave the value blank in the field. - If the field is mandatory but not defined by the specific requirement, set it to 'TBD' (to be defined). - Even though some fields are optional or not defined by the specific requirement, keep them in the object and do not remove them. - In the generated object, comment after exclamation mark for each field about why the value is set or is left blank.",
+      "type": "agent",
+      "agent_tools": [],
+      "short_term_memory": ["all"],
+      "human_input": ["never"]
+    }       
   ],
   "edges": [
     {
-      "simple_edges": [
-        {
-          "id": "edge_1",
-          "connection": ["agent_node_1", "agent_node_2"]
-        },
-        {
-          "id": "edge_2",
-          "connection": ["agent_node_2", "agent_node_3"]
-        }
-      ]
+      "id": "edge_1",
+      "connection": ["agent_node_1", ["agent_node_2"]]
     },
     {
-      "conditional_edge": [
-      ]
+      "id": "edge_2",
+      "connection": ["agent_node_2", ["agent_node_3"]]
     }
   ],
-"tools": [
-  ]
+  "tools": [],
+  "long_term_memory": ["none"]
 }

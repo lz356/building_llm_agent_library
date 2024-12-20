@@ -1,0 +1,64 @@
+{
+  "id": "retrieval_augmented_generation_of_technical_documents",
+  "description": "This workflow employs a retrieval-augmented generation (RAG) approach to automatically visualize and analyze building sensor or simulation data based on the user’s specific requirements. It reduces the time and expertise needed to interpret complex technical documents (e.g., the EnergyPlus Engineering Reference) and provides professional, domain-informed insights.",
+  "model": "gpt-4o",
+  "nodes": [
+{
+      "id": "Researcher",
+      "description": "Searches the technical document to find accurate and relevant information in response to the user’s query.",
+      "system_message": "You are the Researcher. Upon receiving a user’s question, search through the provided technical document to find relevant passages and factual details. Return clear, concise findings without additional commentary beyond what is found in the source.",
+      "type": "action",
+      "agent_tools": [],
+      "short_term_memory": ["all"],
+      "human_input": ["first_time"]
+},
+{
+      "id": "Re-Writer",
+      "description": "Refines the Researcher’s findings into a polished, accessible answer understandable by non-experts.",
+      "system_message": "You are the Re-Writer. Take the Researcher’s extracted information and rewrite it in a professional, clear, and accessible manner. Your goal is to ensure the final answer is both accurate and easily understood by non-building experts. Explain technical terms as needed and maintain a coherent, easy-to-follow narrative.",
+      "type": "agent",
+      "agent_tools": [],
+      "short_term_memory": ["all"],
+      "human_input": ["never"]
+},
+{
+      "id": "action_node_1",
+      "description": "",
+      "system_message": "Decide to call the tool PDFSearchTool to retrieve relevant information from PDF, or decide to pass the existing results to Re-Writer agent",
+      "type": "action",
+      "agent_tools": ["PDFSearchTool"],
+      "short_term_memory": ["all"],
+      "human_input": ["never"]
+}
+  ],
+  "edges": [
+{
+      "id": "edge_1",
+      "type": "simple",
+      "connection": ["START", ["Researcher"]]
+},
+{
+      "id": "edge_2",
+      "type": "conditional",
+      "connection": ["Researcher", ["action_node_1", "Re-Writer"]]
+},
+{
+      "id": "edge_3",
+      "type": "simple",
+      "connection": ["action_node_1", ["Researcher"]]
+},
+{
+      "id": "edge_4",
+      "type": "simple",
+      "connection": ["Re-Writer", ["END"]]
+}
+  ],
+  "tools": [
+{
+      "id": "PDFSearchTool",
+      "description": " Extracts and searches text within PDFs, supports keyword queries, phrase matching, metadata filtering, and OCR for scanned documents. Ideal for analyzing and retrieving insights from PDFs efficiently. ",
+      "content": "from crewai_tools import PDFSearchTool"
+}
+  ],
+  "long_term_memory": ["none"]
+}

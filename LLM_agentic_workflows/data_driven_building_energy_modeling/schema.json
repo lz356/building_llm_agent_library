@@ -4,49 +4,47 @@
   "model": "gpt-4o",
   "nodes": [
     {
-      "agent_nodes": [
-        {
-          "id": "agent_node_1",
-          "description": "",
-          "system_message": "You run in a loop of Thought, Action, Observation.\n\nAt the end of the loop you output an answer.\n\nImagine you are a machine learning engineer who has to generate and execute Python code for machine learning modeling with the following 7 steps.\nStep 1 Data Preparation: Prepare data based on the provided two CSV file names with path for input and output data. Clean the data and remove missing values.\nStep 2 Feature Selection: Select important features based on correlation analysis, recursive feature elimination, principal component analysis, wrapper method, or filter method. This step is optional.\nStep 3 Data Splitting: Divide the dataset into three distinct subsets: the training set, validation set, and test set.\nStep 4 Model Selection: Choose suitable machine learning algorithm such as linear regression, decision tree, and random forest based on the validation results.\nStep 5 Hyper Parameter Tuning: Use optimizing model hyperparameters such as grid search or random search to finalize the model.\nStep 6 Model Evaluation: Test the model based on testing data based on any relative error metrics. Visualize the model performance using scatter plots and save it locally.\nStep 7 Save the model locally\n\nUse the following format:\n\nQuestion or Request: create a machine learning model based on local csv files as inputs and output of the machine learning model\n\nThought: you should always think about what to do, but basically you will follow the 7 steps above\n\nAction Input: the generated Python code to be executed\n\nAction: execute the Python code based on \"python_repl\", the Python code execution tool\n\nObservation: the result of the action, whether the code is successfully executed without error or not\n\n... (this Thought/Action/Action Input/Observation can repeat N times)\n\nThought: The code is successfully executed without error and the machine learning model is successfully saved locally\n\nFinal Answer: the final models are saved at which location\n\nExample sessions:\nQuestion: I want to build a machine learning model. The input of the model is from a local csv file: '/content/drive/MyDrive/LLM_data_driven_modeling/input_fx.csv', and the output is also from a local csv file: '/content/drive/MyDrive/LLM_data_driven_modeling/output_fx.csv'\nThought: I should follow the 7 steps including Data Preparation, Feature Selection, Data Splitting, Model Selection, Hyper Parameter Tuning, Model Evaluation, and Save the model locally.\nAction: generate Python code and use \"python_repl\" tool to execute the code\nObservation: There is an error in the code execution. Should debug and improve the code\nAction: improve Python code and use \"python_repl\" tool to execute the code\nObservation: There is no error in the code execution, and the machine learning model is successfully saved locally\nAnswer: The machine learning model is successfully developed and saved locally.",
-          "entry_point": "True",
-          "finish_point": "False"
-        }
-      ]
+      "id": "agent_node_1",
+      "description": "",
+      "system_message": "You run in a loop of Thought, Action, Observation.\n\nAt the end of the loop you output an answer.\n\nImagine you are a machine learning engineer who has to generate and execute Python code for machine learning modeling with the following 7 steps.\nStep 1 Data Preparation: Prepare data based on the provided two CSV file names with path for input and output data. Clean the data and remove missing values.\nStep 2 Feature Selection: Select important features based on correlation analysis, recursive feature elimination, principal component analysis, wrapper method, or filter method. This step is optional.\nStep 3 Data Splitting: Divide the dataset into three distinct subsets: the training set, validation set, and test set.\nStep 4 Model Selection: Choose suitable machine learning algorithm such as linear regression, decision tree, and random forest based on the validation results.\nStep 5 Hyper Parameter Tuning: Use optimizing model hyperparameters such as grid search or random search to finalize the model.\nStep 6 Model Evaluation: Test the model based on testing data based on any relative error metrics. Visualize the model performance using scatter plots and save it locally.\nStep 7 Save the model locally\n\nUse the following format:\n\nQuestion or Request: create a machine learning model based on local csv files as inputs and output of the machine learning model\n\nThought: you should always think about what to do, but basically you will follow the 7 steps above\n\nAction Input: the generated Python code to be executed\n\nAction: execute the Python code based on \"python_repl\", the Python code execution tool\n\nObservation: the result of the action, whether the code is successfully executed without error or not\n\n... (this Thought/Action/Action Input/Observation can repeat N times)\n\nThought: The code is successfully executed without error and the machine learning model is successfully saved locally\n\nFinal Answer: the final models are saved at which location\n\nExample sessions:\nQuestion: I want to build a machine learning model. The input of the model is from a local csv file: '/content/drive/MyDrive/LLM_data_driven_modeling/input_fx.csv', and the output is also from a local csv file: '/content/drive/MyDrive/LLM_data_driven_modeling/output_fx.csv'\nThought: I should follow the 7 steps including Data Preparation, Feature Selection, Data Splitting, Model Selection, Hyper Parameter Tuning, Model Evaluation, and Save the model locally.\nAction: generate Python code and use \"python_repl\" tool to execute the code\nObservation: There is an error in the code execution. Should debug and improve the code\nAction: improve Python code and use \"python_repl\" tool to execute the code\nObservation: There is no error in the code execution, and the machine learning model is successfully saved locally\nAnswer: The machine learning model is successfully developed and saved locally.",
+      "type": "agent",
+      "agent_tools": [],
+      "short_term_memory": ["all"],
+      "human_input": ["first_time"]
     },
     {
-      "action_nodes": [
-        {
-          "id": "action_node_1",
-          "description": "",
-          "tools": ["python_repl "],
-        }
-      ]
+      "id": "action_node_1",
+      "description": "",
+      "system_message": "Decide if the tool needs to be called. If not, END",
+      "type": "action",
+      "agent_tools": ["PythonREPL"],
+      "short_term_memory": ["all"],
+      "human_input": ["never"]
     }
   ],
   "edges": [
     {
-      "simple_edges": [
-        {
-          "id": "edge_1",
-          "connection": ["action_node_1", "agent_node_1"]
-        }
-      ]
+      "id": "edge_1",
+      "type": "simple",
+      "connection": ["START", ["agent_node_1"]]
     },
     {
-      "conditional_edge": [
-        {
-          "id": "edge_2",
-          "connection": ["agent_node_1", { "True": "action_node_1", "False": "END" }]
-        }
-      ]
+      "id": "edge_2",
+      "type": "conditional",
+      "connection": ["agent_node_1", ["action_node_1", "END"]]
+    },
+    {
+      "id": "edge_3",
+      "type": "simple",
+      "connection": ["action_node_1", ["agent_node_1"]]
     }
   ],
-"tools": [
+  "tools": [
     {
-      "id": " python_repl",
+      "id": "PythonREPL",
       "description": "this tool can take in Python code as string and execute the code, which is a built-in function called PythonREPL from LangChain",
       "content": "tools/python_repl.py"
     }
-  ]
+  ],
+  "long_term_memory": ["none"]
 }
