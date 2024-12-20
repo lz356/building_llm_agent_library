@@ -1,6 +1,6 @@
 # building_llm_agent_library
 
-Please cite: Liang Zhang. 2024. Large Language Model-Based Agent Schema and Library for Building Energy Analysis and Modeling. 2025 ASHRAE Winter Conference. [Under Review]
+Please cite: 1) Liang Zhang. 2024. Large Language Model-Based Agent Schema and Library for Building Energy Analysis and Modeling. 2025 ASHRAE Winter Conference [Accepted], and 2) Large Language Model-Based Agent Schema and Library for Building Energy Analysis and Modeling. Journal of Building Engineering [Under Review].
 
 Reference code from the MOOC "AI Agents in LangGraph": https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/
 
